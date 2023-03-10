@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 
 const Workplace = require("../models/Workplace.model");
 const Comment = require("../models/Comment.model");
+const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
-//Create
+//CREATE ROUTES
 
+//Create Workplace
 router.post("/workplace", async (req, res, next) => {
   const { typeOfPlace, comments, rating, description } = req.body;
 
@@ -25,6 +27,30 @@ router.post("/workplace", async (req, res, next) => {
   }
 });
 
+//Create Comment
+router.post("/comment/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { description } = req.body;
+
+  try {
+    const comment = await Comment.create({
+      description,
+    });
+
+    //Push to Workplace and User
+    const commentToWorkplace = await Workplace.findByIdAndUpdate(id, {
+      $push: { comments: comment },
+    });
+    const commentToUser = await User.findByIdAndUpdate(id, {
+      $push: { userComments: comment },
+    });
+
+    res.json(comment);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 //Read (all)
 
 router.get("/workplaces", async (req, res, next) => {
@@ -36,6 +62,8 @@ router.get("/workplaces", async (req, res, next) => {
   }
 });
 
+
+
 //Read (by id)
 
 router.get("/workplace/:id", async (req, res, next) => {
@@ -43,6 +71,7 @@ router.get("/workplace/:id", async (req, res, next) => {
 
   try {
     const workplace = await Workplace.findById(id).populate("comments");
+
     res.json(workplace);
   } catch (error) {
     res.json(error);

@@ -152,9 +152,9 @@ Components:
 | PUT         | `/edit-workplaces/:id`           | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 200            | 400          | edit workplace                                                                                                                  |
 | DELETE      | `/workplaces/:id`                |                                                                                             | 201            | 400          | delete workplace                                                                                                                |
 
-| POST        | `/created-workplaces-list/:id`   | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user created workplaces list                                                                                             |
+| GET        | `/created-workplaces-list/:id`   | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user created workplaces list                                                                                             |
 | POST        | `/create-favorite-workplace/:id` | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Create a new favorite workplace                                                                                                 |
-| POST        | `/favorite-workplaces-list/:id`  | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user favorited workplaces list                                                                                           |
+| GET        | `/favorite-workplaces-list/:id`  | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user favorited workplaces list                                                                                           |
 
 <br>
 
