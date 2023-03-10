@@ -1,18 +1,23 @@
-const router = require('express').Router();
-const mongoose = require('mongoose');
+const router = require("express").Router();
+const mongoose = require("mongoose");
 
-const Workplace = require('../models/Workplace.model');
+const Workplace = require("../models/Workplace.model");
+const Comment = require("../models/Comment.model");
 
-
-const { isAuthenticated } = require('../middleware/jwt.middleware');
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //Create
 
-router.post('/workplace', isAuthenticated, async (req, res, next) => {
-  const {description, typeOfPlace, comment, rating } = req.body;
+router.post("/workplace", async (req, res, next) => {
+  const { typeOfPlace, comments, rating, description } = req.body;
 
   try {
-    const workplace = await Workplace.create({ description, typeOfPlace, comment, rating });
+    const workplace = await Workplace.create({
+      typeOfPlace,
+      comments,
+      rating,
+      description,
+    });
 
     res.json(workplace);
   } catch (error) {
@@ -22,10 +27,10 @@ router.post('/workplace', isAuthenticated, async (req, res, next) => {
 
 //Read (all)
 
-router.get('/projects', async (req, res, next) => {
+router.get("/workplaces", async (req, res, next) => {
   try {
-    const projects = await Project.find().populate('tasks');
-    res.json(projects);
+    const workplaces = await Workplace.find();
+    res.json(workplaces);
   } catch (error) {
     res.json(error);
   }
@@ -33,12 +38,12 @@ router.get('/projects', async (req, res, next) => {
 
 //Read (by id)
 
-router.get('/projects/:id', async (req, res, next) => {
+router.get("/workplace/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const project = await Project.findById(id).populate('tasks');
-    res.json(project);
+    const workplace = await Workplace.findById(id).populate("comments");
+    res.json(workplace);
   } catch (error) {
     res.json(error);
   }
@@ -46,22 +51,22 @@ router.get('/projects/:id', async (req, res, next) => {
 
 //Update
 
-router.put('/projects/:id', async (req, res, next) => {
+router.put("/workplace/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { title, description } = req.body;
+  const { typeOfPlace, comments, rating, description } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.json('The provided project id is not valid');
+    res.json("The provided workplace id is not valid");
   }
 
   try {
-    const updatedProject = await Project.findByIdAndUpdate(
+    const updatedWorkplace = await Workplace.findByIdAndUpdate(
       id,
-      { title, description },
+      { typeOfPlace, comments, rating, description },
       { new: true }
     );
 
-    res.json(updatedProject);
+    res.json(updatedWorkplace);
   } catch (error) {
     res.json(error);
   }
@@ -69,22 +74,22 @@ router.put('/projects/:id', async (req, res, next) => {
 
 //Delete
 
-router.delete('/projects/:id', async (req, res, next) => {
+router.delete("/workplace/:id", async (req, res, next) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.json('The provided project id is not valid');
+    res.json("The provided workplace id is not valid");
   }
 
   try {
-    //remove the tasks of the project
-    const project = await Project.findById(id);
-    await Task.deleteMany({ _id: project.tasks });
+    //remove the tasks of the workplace
+    const workplace = await Workplace.findById(id);
+    await Comment.deleteMany({ _id: workplace.comments });
 
-    //remove the project
-    await Project.findByIdAndRemove(id);
+    //remove the workplace
+    await Workplace.findByIdAndRemove(id);
 
-    res.json({ message: `Project with the id ${id} deleted successfully` });
+    res.json({ message: `Workplace with the id ${id} deleted successfully` });
   } catch (error) {
     res.json(error);
   }

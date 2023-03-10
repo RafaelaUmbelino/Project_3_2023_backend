@@ -22,7 +22,7 @@ const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const workplaceRoutes = require("./routes/workplace.routes");
-app.use("/workplace", workplaceRoutes);
+app.use("/", workplaceRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
