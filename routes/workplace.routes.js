@@ -10,16 +10,28 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 //CREATE ROUTES
 
 //Create Workplace
-router.post("/workplace", async (req, res, next) => {
-  const { typeOfPlace, comments, rating, description } = req.body;
+router.post("/workplace", isAuthenticated, async (req, res, next) => {
+  const { typeOfPlace, rating, description, paid } = req.body;
+  const currentUser = req.payload._id;
 
   try {
     const workplace = await Workplace.create({
       typeOfPlace,
-      comments,
       rating,
       description,
+      paid,
     });
+
+    const createdWorkplace = workplace._id;
+    const createdToUser = await User.findByIdAndUpdate(
+      currentUser,
+      {
+        $push: {
+          createdWorkplaces: createdWorkplace,
+        },
+      },
+      { new: true }
+    );
 
     res.json(workplace);
   } catch (error) {
@@ -61,8 +73,6 @@ router.get("/workplaces", async (req, res, next) => {
     res.json(error);
   }
 });
-
-
 
 //Read (by id)
 

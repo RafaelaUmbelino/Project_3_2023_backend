@@ -16,7 +16,6 @@ const workplaceSchema = new Schema(
       typeOfPlace: {
         type: [String],
         enum: ["coffee shop", "cowork space", "library/bookstore"],
-        required: true,
       },
       comments: [{type: Schema.Types.ObjectId, ref:'Comment'}],
       paid: {
@@ -27,7 +26,6 @@ const workplaceSchema = new Schema(
       rating: {
         type: [Number],
         enum: [1, 2, 3, 4, 5],
-        required: true,
       }, 
   },
   {
@@ -35,4 +33,8 @@ const workplaceSchema = new Schema(
   }
 );
 
-module.exports = model("Workplace", workplaceSchema);
+
+
+const Workplace = model("Workplace", workplaceSchema);
+
+module.exports = Workplace;
