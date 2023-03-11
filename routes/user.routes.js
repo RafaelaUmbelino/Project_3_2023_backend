@@ -7,7 +7,6 @@ const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
-
 //Add to favorites
 router.post("/users/:userId/:workplaceId/favorites", async (req, res) => {
   const { userId, workplaceId } = req.params;
@@ -47,20 +46,38 @@ router.post("/users/:userId/:workplaceId/favorites", async (req, res) => {
   }
 });
 
+//Delete a favorite
+
+router.delete("/favorite/:id", async (req, res, next) => {
+  let { id } = req.params;
+  let currentUser = req.payload._id;
+
+  try {
+    const removeFavorite = await User.findByIdAndUpdate(
+      { currentUser },
+      { $pull: { favoriteWorkplaces: id } }
+    );
+
+    res.json({ message: `Favorite with the id ${id} deleted successfully` });
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 //show user profile - created and favorites
 
 router.get("/user/:id", async (req, res, next) => {
-    const { id } = req.params;
-  
-    try {
-      const userInfo = await User.findById(id).populate("createdWorkplaces").populate("favoriteWorkplaces")
-  
-      res.json(userInfo);
-    } catch (error) {
-      res.json(error);
-    }
-  });
+  const { id } = req.params;
 
+  try {
+    const userInfo = await User.findById(id)
+      .populate("createdWorkplaces")
+      .populate("favoriteWorkplaces");
 
+    res.json(userInfo);
+  } catch (error) {
+    res.json(error);
+  }
+});
 
 module.exports = router;
