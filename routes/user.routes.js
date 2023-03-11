@@ -48,13 +48,15 @@ router.post("/users/:userId/:workplaceId/favorites", async (req, res) => {
 
 //Delete a favorite
 
-router.delete("/favorite/:id", async (req, res, next) => {
+router.delete("/favorite/:id", isAuthenticated, async (req, res, next) => {
   let { id } = req.params;
   let currentUser = req.payload._id;
+  console.log(id);
+  console.log(currentUser);
 
   try {
     const removeFavorite = await User.findByIdAndUpdate(
-      { currentUser },
+     currentUser,
       { $pull: { favoriteWorkplaces: id } }
     );
 

@@ -40,21 +40,24 @@ router.post("/workplace", isAuthenticated, async (req, res, next) => {
 });
 
 //Create Comment
-router.post("/comment/:id", async (req, res, next) => {
+router.post("/comment/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { description } = req.body;
+  const currentUser = req.payload._id;
 
   try {
     const comment = await Comment.create({
       description,
     });
 
+    const createdComment = comment._id
+
     //Push to Workplace and User
     const commentToWorkplace = await Workplace.findByIdAndUpdate(id, {
-      $push: { comments: comment },
+      $push: { comments: createdComment },
     });
-    const commentToUser = await User.findByIdAndUpdate(id, {
-      $push: { userComments: comment },
+    const commentToUser = await User.findByIdAndUpdate(currentUser, {
+      $push: { userComments: createdComment },
     });
 
     res.json(comment);
