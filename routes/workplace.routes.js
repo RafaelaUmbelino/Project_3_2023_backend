@@ -10,7 +10,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 //CREATE ROUTES
 
 //Create Workplace
-router.post("/workplaces", isAuthenticated, async (req, res, next) => {
+router.post("/workplaces/new", isAuthenticated, async (req, res, next) => {
   const { typeOfPlace, rating, description, paid } = req.body;
   const currentUser = req.payload._id;
 
@@ -50,7 +50,7 @@ router.post("/comment/:id", isAuthenticated, async (req, res, next) => {
       description,
     });
 
-    const createdComment = comment._id
+    const createdComment = comment._id;
 
     //Push to Workplace and User
     const commentToWorkplace = await Workplace.findByIdAndUpdate(id, {
@@ -79,7 +79,7 @@ router.get("/workplaces", isAuthenticated, async (req, res, next) => {
 
 //Read (by id)
 
-router.get("/workplaces/:id",isAuthenticated, async (req, res, next) => {
+router.get("/workplaces/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
   try {
