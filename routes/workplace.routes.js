@@ -10,7 +10,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 //CREATE ROUTES
 
 //Create Workplace
-router.post("/workplace", isAuthenticated, async (req, res, next) => {
+router.post("/workplaces", isAuthenticated, async (req, res, next) => {
   const { typeOfPlace, rating, description, paid } = req.body;
   const currentUser = req.payload._id;
 
@@ -68,7 +68,7 @@ router.post("/comment/:id", isAuthenticated, async (req, res, next) => {
 
 //Read (all)
 
-router.get("/workplaces", async (req, res, next) => {
+router.get("/workplaces", isAuthenticated, async (req, res, next) => {
   try {
     const workplaces = await Workplace.find();
     res.json(workplaces);
@@ -79,7 +79,7 @@ router.get("/workplaces", async (req, res, next) => {
 
 //Read (by id)
 
-router.get("/workplace/:id", async (req, res, next) => {
+router.get("/workplaces/:id",isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -93,7 +93,7 @@ router.get("/workplace/:id", async (req, res, next) => {
 
 //Update
 
-router.put("/workplace/:id", async (req, res, next) => {
+router.put("/workplaces/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { typeOfPlace, comments, rating, description } = req.body;
 
@@ -116,7 +116,7 @@ router.put("/workplace/:id", async (req, res, next) => {
 
 //Delete
 
-router.delete("/workplace/:id", async (req, res, next) => {
+router.delete("/workplaces/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
