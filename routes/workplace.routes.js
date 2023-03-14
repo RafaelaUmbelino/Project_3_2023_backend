@@ -16,29 +16,12 @@ router.post("/workplaces/new", isAuthenticated, async (req, res, next) => {
   const currentUser = req.payload._id;
 
   try {
-      
-      // const response = await axios.get(
-      //   `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${PT}&key=${PLACES_API_KEY}`
-      // );
-      // const placeData = response.data.results[0];
-  
-      // const workplace = await Workplace.create({
-      //   typeOfPlace,
-      //   rating,
-      //   description,
-      //   paid,
-      //   address: placeData.formatted_address,
-      //   website: placeData.website,
-      //   name: placeData.name,
-      //   photo: placeData.photos,
-      // });
-
-        const workplace = await Workplace.create({
-          typeOfPlace,
-          rating,
-          description,
-          paid,
-        });
+    const workplace = await Workplace.create({
+      typeOfPlace,
+      rating,
+      description,
+      paid,
+    });
 
     const createdWorkplace = workplace._id;
     const createdToUser = await User.findByIdAndUpdate(
@@ -156,3 +139,21 @@ router.delete("/workplaces/:id", async (req, res, next) => {
 });
 
 module.exports = router;
+
+
+
+    // const response = await axios.get(
+    //   `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${PT}&key=${PLACES_API_KEY}`
+    // );
+    // const placeData = response.data.results[0];
+  
+    // const workplace = await Workplace.create({
+    //   typeOfPlace,
+    //   rating,
+    //   description,
+    //   paid,
+    //   address: placeData.formatted_address,
+    //   website: placeData.website,
+    //   name: placeData.name,
+    //   photo: placeData.photos,
+    // });
