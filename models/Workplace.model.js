@@ -20,7 +20,7 @@ const workplaceSchema = new Schema(
       comments: [{type: Schema.Types.ObjectId, ref:'Comment'}],
       paid: {
         type: [String],
-        enum: ["yes", "no"],
+        enum: ["yes", "no","order something"],
       },
 
       rating: {

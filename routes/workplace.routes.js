@@ -95,7 +95,7 @@ router.get("/workplaces/:id", isAuthenticated, async (req, res, next) => {
 
 router.put("/workplaces/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
-  const { typeOfPlace, comments, rating, description } = req.body;
+  const { typeOfPlace, comments, rating, description, paid } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.json("The provided workplace id is not valid");
@@ -104,7 +104,7 @@ router.put("/workplaces/:id", isAuthenticated, async (req, res, next) => {
   try {
     const updatedWorkplace = await Workplace.findByIdAndUpdate(
       id,
-      { typeOfPlace, comments, rating, description },
+      { typeOfPlace, comments, rating, description, paid },
       { new: true }
     );
 
