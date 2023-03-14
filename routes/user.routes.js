@@ -8,7 +8,7 @@ const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //Add to favorites
-router.post("/users/:userId/:workplaceId/favorites", isAuthenticated, async (req, res) => {
+router.post("/users/:userId/:workplaceId/favorites", async (req, res) => {
   const { userId, workplaceId } = req.params;
 
   try {
@@ -48,7 +48,7 @@ router.post("/users/:userId/:workplaceId/favorites", isAuthenticated, async (req
 
 //Delete a favorite
 
-router.delete("/user/favorite/:id", isAuthenticated, async (req, res, next) => {
+router.delete("/user/favorite/:id", async (req, res, next) => {
   let { id } = req.params;
   let currentUser = req.payload._id;
   console.log(id);
@@ -68,7 +68,7 @@ router.delete("/user/favorite/:id", isAuthenticated, async (req, res, next) => {
 
 //show user profile - created and favorites
 
-router.get("/user/:id", isAuthenticated, async (req, res, next) => {
+router.get("/user/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
