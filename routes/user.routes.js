@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 
+
 const Workplace = require("../models/Workplace.model");
 const Comment = require("../models/Comment.model");
 const User = require("../models/User.model");
@@ -8,7 +9,7 @@ const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //Add to favorites
-router.post("/users/:userId/:workplaceId/favorites", async (req, res) => {
+router.post("/users/:workplaceId/:userId/favorites", isAuthenticated, async (req, res) => {
   const { userId, workplaceId } = req.params;
 
   try {

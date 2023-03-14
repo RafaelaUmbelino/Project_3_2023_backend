@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
+// const axios = require("axios");
 
 const Workplace = require("../models/Workplace.model");
 const Comment = require("../models/Comment.model");
@@ -15,12 +16,29 @@ router.post("/workplaces/new", isAuthenticated, async (req, res, next) => {
   const currentUser = req.payload._id;
 
   try {
-    const workplace = await Workplace.create({
-      typeOfPlace,
-      rating,
-      description,
-      paid,
-    });
+      
+      // const response = await axios.get(
+      //   `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${PT}&key=${PLACES_API_KEY}`
+      // );
+      // const placeData = response.data.results[0];
+  
+      // const workplace = await Workplace.create({
+      //   typeOfPlace,
+      //   rating,
+      //   description,
+      //   paid,
+      //   address: placeData.formatted_address,
+      //   website: placeData.website,
+      //   name: placeData.name,
+      //   photo: placeData.photos,
+      // });
+
+        const workplace = await Workplace.create({
+          typeOfPlace,
+          rating,
+          description,
+          paid,
+        });
 
     const createdWorkplace = workplace._id;
     const createdToUser = await User.findByIdAndUpdate(
@@ -68,7 +86,7 @@ router.post("/comment/:id", isAuthenticated, async (req, res, next) => {
 
 //Read (all)
 
-router.get("/workplaces", isAuthenticated, async (req, res, next) => {
+router.get("/workplaces", async (req, res, next) => {
   try {
     const workplaces = await Workplace.find();
     res.json(workplaces);
@@ -79,7 +97,7 @@ router.get("/workplaces", isAuthenticated, async (req, res, next) => {
 
 //Read (by id)
 
-router.get("/workplaces/:id", isAuthenticated, async (req, res, next) => {
+router.get("/workplaces/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -116,7 +134,7 @@ router.put("/workplaces/:id", isAuthenticated, async (req, res, next) => {
 
 //Delete
 
-router.delete("/workplaces/:id", isAuthenticated, async (req, res, next) => {
+router.delete("/workplaces/:id", async (req, res, next) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
