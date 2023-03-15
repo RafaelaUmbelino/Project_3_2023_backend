@@ -1,27 +1,22 @@
+const mongoose = require("mongoose");
 const { Schema, model } = require("mongoose");
 
 const workplaceSchema = new Schema(
   {
-    // place_id: String,
-    // name: String,
-    // photos: String,
-    // url: String,
-    // formatted_address: String,
-    // website: String,
-      // name: {
-      //   type: String,
-      // },
-      // photos: {
-      //   type: String,
-      // },
-      // address: {
-      //   type: String,
-      // },
-
-      // website: {
-      //   type: String,
-      // },
-
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    link: {
+      type: String,
+      trim: true,
+    },
     description: {
       type: String,
       trim: true,
@@ -40,6 +35,7 @@ const workplaceSchema = new Schema(
       type: [Number],
       enum: [1, 2, 3, 4, 5],
     },
+    imageUrl: String,
   },
   {
     timestamps: true,
