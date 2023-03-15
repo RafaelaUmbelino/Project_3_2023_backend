@@ -128,4 +128,36 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
+router.get("/updateToken", isAuthenticated, async (req, res, next) => {
+  const id = req.payload._id;
+
+  const user = await User.findById(id);
+
+  const {
+    _id,
+    email,
+    name,
+    createdWorkplaces,
+    favoriteWorkplaces,
+    userComments,
+  } = user;
+
+  // Create an object that will be set as the token payload
+  const payload = {
+    _id,
+    email,
+    name,
+    createdWorkplaces,
+    favoriteWorkplaces,
+    userComments,
+  };
+
+  // Create a JSON Web Token and sign it
+  const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+    algorithm: "HS256",
+    expiresIn: "14d",
+  });
+  res.status(200).json({ authToken: authToken });
+});
+
 module.exports = router;

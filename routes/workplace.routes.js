@@ -54,6 +54,9 @@ router.post("/comment/:id", isAuthenticated, async (req, res, next) => {
     const createdComment = comment._id;
 
     //Push to Workplace and User
+    const userToComment = await Comment.findByIdAndUpdate(createdComment, {
+      $push: { user: currentUser },
+    });
     const commentToWorkplace = await Workplace.findByIdAndUpdate(id, {
       $push: { comments: createdComment },
     });
@@ -84,7 +87,12 @@ router.get("/workplaces/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const workplace = await Workplace.findById(id).populate("comments");
+    const workplace = await Workplace.findById(id)
+      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: { path: "user", model: "User" },
+      });
 
     res.json(workplace);
   } catch (error) {
@@ -140,20 +148,18 @@ router.delete("/workplaces/:id", async (req, res, next) => {
 
 module.exports = router;
 
+// const response = await axios.get(
+//   `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${PT}&key=${PLACES_API_KEY}`
+// );
+// const placeData = response.data.results[0];
 
-
-    // const response = await axios.get(
-    //   `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${PT}&key=${PLACES_API_KEY}`
-    // );
-    // const placeData = response.data.results[0];
-  
-    // const workplace = await Workplace.create({
-    //   typeOfPlace,
-    //   rating,
-    //   description,
-    //   paid,
-    //   address: placeData.formatted_address,
-    //   website: placeData.website,
-    //   name: placeData.name,
-    //   photo: placeData.photos,
-    // });
+// const workplace = await Workplace.create({
+//   typeOfPlace,
+//   rating,
+//   description,
+//   paid,
+//   address: placeData.formatted_address,
+//   website: placeData.website,
+//   name: placeData.name,
+//   photo: placeData.photos,
+// });
