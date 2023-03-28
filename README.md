@@ -1,14 +1,13 @@
-# Project Name
-
-<br>
-
-# Quick Compo
-
+# Roaming Genie
 <br>
 
 ## Description
 
-This is an app where developers can help each other by sharing workplaces.
+Welcome to Roaming Genie, an app that lets developers share their favorite workspaces outside of their homes! Whether it's a cozy coffee shop, a professional coworking space, or a peaceful library, Roaming Genie lets you discover new places to work and connect with other developers who share your tastes.
+
+With Roaming Genie, you can browse the places other developers added to find workspaces that are conveniently located, and read reviews from other developers to get a sense of what each place is like. You can also add your own favorite workspaces, add workspaces to your favorites and leave comments and to help other developers find the best spots.
+
+With Roaming Genie, you'll never have to work in the same place twice! Start exploring new workplaces today and connect with a community of developers who love to work on the go.
 
 ## User Stories
 
@@ -22,9 +21,6 @@ This is an app where developers can help each other by sharing workplaces.
 - **Edit workplace:** As a logged in user I can access the edit workplace page so that I can edit the workplace I created.
 - **Workplace Details:** As a user I want to see the workplace details and comments.
 
-## Backlog
-
-
 <br>
 
 # Client / Frontend
@@ -32,7 +28,7 @@ This is an app where developers can help each other by sharing workplaces.
 ## React Router Routes (React App)
 
 | Path                                  | Component              | Permissions                | Behavior                                                                                                                |
-| ------------------------------------- | ---------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --- |
+| ------------------------------------- | ---------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `/login`                              | LoginPage              | anon only `<AnonRoute>`    | Login form, navigates to home page after login.                                                                         |
 | `/signup`                             | SignupPage             | anon only `<AnonRoute>`    | Signup form, navigates to login page after signup.                                                                      |
 | `/`                                   | HomePage               | public `<Route>`           | Home page.                                                                                                              |
@@ -42,9 +38,7 @@ This is an app where developers can help each other by sharing workplaces.
 | `/user-profile/created/:createdID`    | DisplayFavoriteDetails | user only `<PrivateRoute>` | Access a favorite workplace.                                                                                            |
 | `/workplace/add`                      | CreateWorkplacePage    | user only `<PrivateRoute>` | Create new workplace form.                                                                                              |
 | `/workplaces`                         | WorkplacesListPage     | user only `<PrivateRoute>` | Workplaces added by all users with the possibility of filtering by city and type of place, and sorting by rating place. |
-| `/workplace/:workplaceId`             | WorkplaceDetailPage    | user only `<PrivateRoute>` | Workplace details. Shows workplace details and comments.                                                                |     |
-
-|
+| `/workplace/:workplaceId`             | WorkplaceDetailPage    | user only `<PrivateRoute>` | Workplace details. Shows workplace details and comments.                                                                |
 
 ## Components
 
@@ -72,11 +66,7 @@ Components:
 
 ## Services
 
-<!-- - **User Service**
 
-  - `userService` :
-    - `.updateCurrentUser(id, userData)`
-    - `.getCurrentUser()` -->
 
 - **Workplace Service**
 
@@ -96,7 +86,6 @@ Components:
 
 ```javascript
 {
-  username: {type: String, required: true},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   createdWorkplaces: [ { type: Schema.Types.ObjectId, ref:'Workplace' } ],
@@ -141,15 +130,15 @@ Components:
 | POST        | `/auth/signup`                       | {name, email, password}                                                                     | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
 | POST        | `/auth/login`                        | {username, password}                                                                        | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
 | POST        | `/auth/logout`                       |                                                                                             | 204            | 400          | Logs out the user                                                                                                               |
-| GET         | `/workplaces`                    |                                                                                             |                | 400          | Show all workplaces                                                                                                             |
-| GET         | `/workplace/:id`                 |                                                                                             |                |              | Show specific workplace                                                                                                         |
-| POST        | `/create-workplaces`             | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Create and save a new workplace                                                                                                 |
-| PUT         | `/edit-workplaces/:id`           | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 200            | 400          | edit workplace                                                                                                                  |
-| DELETE      | `/workplaces/:id`                |                                                                                             | 201            | 400          | delete workplace                                                                                                                |
-
-| GET        | `/created-workplaces-list/:id`   | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user created workplaces list                                                                                             |
-| POST        | `/create-favorite-workplace/:id` | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Create a new favorite workplace                                                                                                 |
-| GET        | `/favorite-workplaces-list/:id`  | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user favorited workplaces list                                                                                           |
+| GET         | `/api/workplaces`                    |                                                                                             |                | 400          | Show all workplaces                                                                                                             |
+| GET         | `/api/workplace/:id`                 |                                                                                             |                |              | Show specific workplace                                                                                                         |
+| POST        | `/api/create-workplaces`             | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Create and save a new workplace                                                                                                 |
+| PUT         | `/api/edit-workplaces/:id`           | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 200            | 400          | edit workplace                                                                                                                  |
+| DELETE      | `/api/workplaces/:id`                |                                                                                             | 201            | 400          | delete workplace                                                                                                                |
+| PUT         | `/api/edit-user/:id`                 | { name, email, password }                                                                   | 201            | 400          | edit player                                                                                                                     |
+| POST        | `/api/created-workplaces-list/:id`   | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user created workplaces list                                                                                             |
+| POST        | `/api/create-favorite-workplace/:id` | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Create a new favorite workplace                                                                                                 |
+| POST        | `/api/favorite-workplaces-list/:id`  | { name, img, rating, city, typeOfPlace, bookstore, paid, description, comment, timestamps } | 201            | 400          | Access user favorited workplaces list                                                                                           |
 
 <br>
 
@@ -175,11 +164,7 @@ The url to your repository and to your deployed project
 
 [Server repository Link](https://github.com/RafaelaUmbelino/Project_3_2023_backend)
 
-[Deployed App Link]()
-
-### Slides
-
-[Slides Link](http://slides.com) - The url to your _public_ presentation slides
+[Deployed App Link](https://roaming-genie.netlify.app/)
 
 ### Contributors
 
